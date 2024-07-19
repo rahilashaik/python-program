@@ -1,0 +1,176 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fswiss\fcharset134 Calibri;}{\f1\fswiss\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\widctlpar\sb100\sl240\slmult1\b\f0\fs27 Problem 1: Real-Time Weather Monitoring System\par
+
+\pard 
+{\pntext\f1 1.\tab}{\*\pn\pnlvlbody\pnf1\pnindent360\pnstart1\pndec{\pntxta.}}
+\widctlpar\fi-360\li720\sb100\sl240\slmult1\tx720\f1\fs24 M\f0 odel the data flow for fetching weather information from an external API and displaying it to the user.\f1\par
+
+\pard\widctlpar\sb100\sl240\slmult1\tx720\b0  1.User Interface (UI):\par
+   - The user interacts with the application, such as through a web page, mobile app interface, or a command-line interface.\par
+2. User Request:\par
+   - The user initiates a request to fetch weather information, typically by entering a location (e.g., city name, ZIP code) or allowing the application to use their current location.\par
+3. Frontend (Client-side):\par
+   - The frontend application (web browser, mobile app, etc.) collects the user's input and prepares to send a request to the backend server.\par
+4. Backend (Server-side):\par
+   - The backend server receives the request from the frontend to fetch weather data.\par
+   - It may perform initial validation of the user input (e.g., check for valid location format).\par
+5. External API Request:\par
+   - The backend server makes an HTTP request to the external weather API.\par
+   - The request includes parameters such as the location (e.g., city name, coordinates) and possibly an API key for authentication.\par
+6. External API Response:\par
+   - The external weather API processes the request and returns a response containing weather data in JSON or XML format.\par
+   - This data typically includes current weather conditions (temperature, humidity, wind speed, etc.) and possibly forecasts.\par
+7. Backend Processing:\par
+   - The backend server receives the response from the external API.\par
+   - It may parse and validate the received data to ensure it is complete and accurate.\par
+   - Additional processing might include caching the data for a certain period to reduce API calls if the same location is requested frequently.\par
+8. Data Transformation (Optional):\par
+   - If necessary, the backend might transform the raw data into a more suitable format for the frontend (e.g., converting units, formatting dates).\par
+9. Backend Response:\par
+   - The backend server sends a response back to the frontend application.\par
+   - This response includes the processed weather data, ready to be displayed to the user.\par
+10. Frontend Display:\par
+    - The frontend receives the weather data from the backend.\par
+    - It formats the data according to the UI design (e.g., displaying icons for weather conditions, showing temperature and humidity in a user-friendly way).\par
+11. User Interface Update:\par
+    - The updated weather information is displayed to the user on their device.\par
+12. User Interaction:\par
+    - The user may interact further with the displayed weather information, such as refreshing the data, viewing more details, or selecting a different location.\par
+\par
+\par
+2.\b\f0 Implement a Python application that integrates with a weather API (e.g., Open\f1  w\f0 eather\f1 m\f0 ap) to fetch real-time weather data.\par
+\b0 import requests\par
+\par
+def fetch_weather_data(api_key, city):\par
+    base_url = "{{\field{\*\fldinst{HYPERLINK https://api.openweathermap.org/data/2.5/weather }}{\fldrslt{https://api.openweathermap.org/data/2.5/weather\ul0\cf0}}}}\f0\fs24 "\par
+    params = \{\par
+        "q": city,\par
+        "units": "metric",  # or "imperial" for Fahrenheit\par
+        "appid": api_key\par
+    \}\par
+\par
+    try:\par
+        response = requests.get(base_url, params=params)\par
+        response.raise_for_status()  # Check for any errors in the response\par
+\par
+        weather_data = response.json()\par
+        return weather_data\par
+\par
+    except requests.exceptions.RequestException as e:\par
+        print(f"Error fetching data: \{e\}")\par
+        return None\par
+def main():\par
+    api_key = "YOUR_API_KEY_HERE"  # Replace with your actual API key from OpenWeatherMap\par
+    city = input("Enter city name: ")\par
+\par
+    weather_data = fetch_weather_data(api_key, city)\par
+\par
+  if weather_data:\par
+        print(f"Weather in \{city\}:")\par
+        print(f"Temperature: \{weather_data['main']['temp']\}\f1\'b0C")\par
+        print(f"Weather Description: \{weather_data['weather'][0]['description']\}")\par
+        print(f"Humidity: \{weather_data['main']['humidity']\}%")\par
+        print(f"Wind Speed: \{weather_data['wind']['speed']\} meter/sec")\par
+    else:\par
+        print("Failed to fetch weather data.")\par
+if __name__ == "__main__":\par
+    main()\f0\par
+\f1 3.\b\f0 Display the current weather information, including temperature, weather conditions, humidity, and wind speed.\par
+\b0 import requests\par
+\par
+def fetch_weather_data(api_key, city):\par
+    base_url = "{{\field{\*\fldinst{HYPERLINK https://api.openweathermap.org/data/2.5/weather }}{\fldrslt{https://api.openweathermap.org/data/2.5/weather\ul0\cf0}}}}\f0\fs24 "\par
+    params = \{\par
+        "q": city,\par
+        "units": "metric",  # or "imperial" for Fahrenheit\par
+        "appid": api_key\par
+    \}\par
+\par
+    try:\par
+        response = requests.get(base_url, params=params)\par
+        response.raise_for_status()  # Check for any errors in the response\par
+\par
+        weather_data = response.json()\par
+        return weather_data\par
+\par
+    except requests.exceptions.RequestException as e:\par
+        print(f"Error fetching data: \{e\}")\par
+        return None\par
+\par
+def display_weather_data(weather_data):\par
+    if weather_data:\par
+        print(f"Weather in \{weather_data['name']\}:")\par
+        print(f"Temperature: \{weather_data['main']['temp']\}\f1\'b0C")\par
+        print(f"Weather Description: \{weather_data['weather'][0]['description']\}")\par
+        print(f"Humidity: \{weather_data['main']['humidity']\}%")\par
+        print(f"Wind Speed: \{weather_data['wind']['speed']\} meter/sec")\par
+    else:\par
+        print("Failed to fetch weather data.")\par
+\par
+def main():\par
+    api_key = "YOUR_API_KEY_HERE"  # Replace with your actual API key from OpenWeatherMap\par
+    city = input("Enter city name: ")\par
+\par
+    weather_data = fetch_weather_data(api_key, city)\par
+    display_weather_data(weather_data)\par
+\par
+if __name__ == "__main__":\par
+    main()\par
+\par
+4. \b\f0 Allow users to input the location (city name or coordinates) and display the corresponding weather data.\par
+\b0 import requests\par
+\par
+def fetch_weather_data(api_key, location):\par
+    base_url = "{{\field{\*\fldinst{HYPERLINK https://api.openweathermap.org/data/2.5/weather }}{\fldrslt{https://api.openweathermap.org/data/2.5/weather\ul0\cf0}}}}\f0\fs24 "\par
+\par
+    # Determine if location is city name or coordinates\par
+    if ',' in location:\par
+        params = \{\par
+            "lat": location.split(',')[0],\par
+            "lon": location.split(',')[1],\par
+            "units": "metric",  # or "imperial" for Fahrenheit\par
+            "appid": api_key\par
+        \}\par
+    else:\par
+        params = \{\par
+            "q": location,\par
+            "units": "metric",  # or "imperial" for Fahrenheit\par
+            "appid": api_key\par
+        \}\par
+\par
+    try:\par
+        response = requests.get(base_url, params=params)\par
+        response.raise_for_status()  # Check for any errors in the response\par
+\par
+        weather_data = response.json()\par
+        return weather_data\par
+\par
+    except requests.exceptions.RequestException as e:\par
+        print(f"Error fetching data: \{e\}")\par
+        return None\par
+\par
+def display_weather_data(weather_data):\par
+    if weather_data:\par
+        print(f"Weather in \{weather_data['name']\}:")\par
+        print(f"Temperature: \{weather_data['main']['temp']\}\f1\'b0C")\par
+        print(f"Weather Description: \{weather_data['weather'][0]['description']\}")\par
+        print(f"Humidity: \{weather_data['main']['humidity']\}%")\par
+        print(f"Wind Speed: \{weather_data['wind']['speed']\} meter/sec")\par
+    else:\par
+        print("Failed to fetch weather data.")\par
+\par
+def main():\par
+    api_key = "YOUR_API_KEY_HERE"  # Replace with your actual API key from OpenWeatherMap\par
+    location = input("Enter city name or coordinates (latitude,longitude): ")\par
+\par
+    weather_data = fetch_weather_data(api_key, location)\par
+    display_weather_data(weather_data)\par
+\par
+if __name__ == "__main__":\par
+    main()\f0\par
+\par
+\f1\par
+}
+ 
